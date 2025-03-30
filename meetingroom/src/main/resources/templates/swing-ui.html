@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Meeting Room Management System</title>
+    <link rel="stylesheet" th:href="@{/styles/home.css}"></head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold text-indigo-900">Meeting Room Management System</h1>
+                <div th:if="${user}" class="flex items-center gap-4">
+                    <p class="text-gray-700">Welcome, <span class="font-semibold" th:text="${user}"></span>!</p>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                            Logout
+                        </button>
+                    </form>
+                </div>
+                <p th:unless="${user}" class="text-gray-600">Please login or register to access all features.</p>
+            </div>
+            
+            <div th:if="${message}" class="bg-green-100 text-green-700 p-3 rounded-md mb-6" th:text="${message}"></div>
+            
+            <div class="prose max-w-none mb-8">
+                <p class="font-semibold">
+                    Our Meeting Room Management System simplifies the process of booking and managing meeting spaces in your organization.
+                </p>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg shadow-md p-6 text-white">
+                <h2 class="text-2xl font-bold mb-4">Streamline Your Meetings</h2>
+                <p class="mb-4">
+                    Efficiently manage your meeting spaces with our intuitive booking system. 
+                    View availability, book rooms, and manage your schedule all in one place.
+                </p>
+                <div th:unless="${user}" class="mt-6 flex gap-4">
+                    <a href="/auth/login" class="bg-white text-indigo-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors font-medium">
+                        Login
+                    </a>
+                    <a href="/auth/register" class="bg-indigo-800 text-white px-4 py-2 rounded-lg hover:bg-indigo-900 transition-colors font-medium">
+                        Register
+                    </a>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-indigo-900 mb-4">Key Features</h2>
+                <ul class="space-y-4">
+                    <li class="flex items-start gap-3">
+                        <div class="bg-indigo-100 p-2 rounded-md text-indigo-600 mt-1">
+                            📅
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Book Meeting Rooms</h3>
+                            <p class="text-gray-600">Select rooms, dates, and times with a simple booking interface.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="bg-indigo-100 p-2 rounded-md text-indigo-600 mt-1">
+                            📋
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Manage Reservations</h3>
+                            <p class="text-gray-600">View and cancel your bookings with ease.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="bg-indigo-100 p-2 rounded-md text-indigo-600 mt-1">
+                            👥
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Admin Controls</h3>
+                            <p class="text-gray-600">Add, edit, or remove meeting rooms (admin access only).</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="bg-indigo-100 p-2 rounded-md text-indigo-600 mt-1">
+                            📊
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Usage Analytics</h3>
+                            <p class="text-gray-600">View usage statistics and optimize your meeting spaces.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div th:if="${user}" class="flex justify-center mt-4">
+            <a href="/dashboard" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold text-lg">
+                Go to Dashboard
+            </a>
+        </div>
+    </div>
+</body>
+</html>

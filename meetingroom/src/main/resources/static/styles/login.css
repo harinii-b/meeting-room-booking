@@ -1,0 +1,177 @@
+:root {
+    --primary-color: #6366f1;
+    --primary-hover: #4f46e5;
+    --dark-bg: #1e293b;
+    --card-bg: rgba(30, 41, 59, 0.95);
+    --text-light: #f9fafb;
+    --text-muted: #94a3b8;
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+    --box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  .login-container, .register-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--dark-bg);
+    background-image: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(17, 24, 39, 0.95) 100%);
+    padding: 1.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+  
+  .login-card, .register-card {
+    width: 100%;
+    max-width: 420px;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2.5rem 2rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  .login-header, .register-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .login-header h2, .register-header h2 {
+    color: var(--text-light);
+    font-size: 1.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.025em;
+  }
+  
+  .login-header p, .register-header p {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+  }
+  
+  .login-form, .register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  
+  .form-group {
+    position: relative;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+  }
+  
+  .form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  }
+  
+  .form-control::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+  
+  .login-button, .register-button {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    margin-top: 1rem;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: center;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color var(--transition-speed), transform var(--transition-speed);
+  }
+  
+  .login-button:hover, .register-button:hover {
+    background-color: var(--primary-hover);
+  }
+  
+  .login-button:active, .register-button:active {
+    transform: scale(0.98);
+  }
+  
+  .message {
+    margin-top: 1.5rem;
+    padding: 0.75rem;
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+    text-align: center;
+  }
+  
+  .message.error {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+  
+  .message.success {
+    background-color: rgba(99, 102, 241, 0.1);
+    color: #6366f1;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+  }
+  
+  .login-footer, .register-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+  }
+  
+  .login-footer a, .register-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-speed);
+  }
+  
+  .login-footer a:hover, .register-footer a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
+    .login-card, .register-card {
+      padding: 2rem 1.5rem;
+    }
+    
+    .login-header h2, .register-header h2 {
+      font-size: 1.5rem;
+    }
+  }
+  
