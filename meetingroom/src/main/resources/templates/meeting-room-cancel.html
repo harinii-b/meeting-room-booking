@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cancel Meeting Room Booking</title>
+    <link rel="stylesheet" th:href="@{/styles/meeting-room.css}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-container">
+        <a th:href="@{/}" class="navbar-logo">Meeting Room System</a>
+        <div class="navbar-links">
+            <a th:href="@{/}" class="nav-link">Home</a>
+            <a th:href="@{/auth/logout}" class="nav-link logout-button">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<div class="booking-container">
+    <h2>Cancel a Meeting Room Booking</h2>
+
+    <form th:action="@{/cancel-meeting-room}" method="post" class="booking-form">
+        <label for="bookingId">Enter Booking ID to Cancel:</label>
+        <input type="number" id="bookingId" name="bookingId" required>
+
+        <button type="submit" class="submit-button">Cancel Booking</button>
+    </form>
+
+    <p th:if="${successMessage}" class="success-message" th:text="${successMessage}"></p>
+    <p th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></p>
+</div>
+
+<div class="bookings-list">
+    <h2>Current Bookings</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Room Name</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Booked By</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="booking : ${bookings}">
+            <td th:text="${booking.id}"></td>
+            <td th:text="${booking.roomName}"></td>
+            <td th:text="${booking.startTime}"></td>
+            <td th:text="${booking.endTime}"></td>
+            <td th:text="${booking.bookedBy}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
