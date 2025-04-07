@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Home</title>
+    <link rel="stylesheet" th:href="@{/styles/userhome.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a th:href="@{/}" class="navbar-logo">Meeting Room System</a>
+            <div class="navbar-links">
+                <a th:href="@{/}" class="nav-link">Home</a>
+                <a th:href="@{/auth/login}" class="nav-link">Login</a>
+                <a th:href="@{/auth/register}" class="nav-link register-button">Register</a>
+            </div>
+        </div>
+    </nav>
+    <div class="user-home-container">
+        <div class="user-home-wrapper">
+            <div class="user-home-card">
+                <h1 class="user-home-title">Meeting Room Booking</h1>
+                <p class="user-home-subtitle">Manage your meeting spaces</p>
+                
+                <div class="user-actions">
+                    <a th:href="@{/addroom}" class="user-action-button">
+                        <div class="button-icon">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4egKRBc_o-8Vj-yr0GyZ2N_oxMgUEuBQQeg&s" alt="Book a Room" class="button-image" />
+                        </div>
+                        <div class="button-content">
+                            <h3>Add a Room</h3>
+                            <p>Add available meeting spaces</p>
+                        </div>
+                    </a>
+                    
+                    <a th:href="@{/dashboard}" class="user-action-button">
+                        <div class="button-icon">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6pApEQzlCnXgQOh2WvPnkd9KVdgO00xvUwQ&s" alt="Cancel Booking" class="button-image" />
+                        </div>
+                        <div class="button-content">
+                            <h3>Analytics Dashboard</h3>
+                            <p>Check at how rooms are being booked</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
