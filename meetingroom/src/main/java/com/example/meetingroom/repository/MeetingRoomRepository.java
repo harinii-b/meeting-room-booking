@@ -36,6 +36,7 @@ package com.example.meetingroom.repository;
 
 import com.example.meetingroom.model.MeetingRoomBooking;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -64,7 +65,11 @@ public interface MeetingRoomRepository extends JpaRepository<MeetingRoomBooking,
         @Param("bookedBy") String bookedBy,
         @Param("startTime") LocalDateTime startTime,
         @Param("endTime") LocalDateTime endTime
+
+    
     );
 }
+
+
 
 
