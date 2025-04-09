@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Meeting Room Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .room-table {
+            margin-top: 30px;
+        }
+        .alert {
+            margin-top: 20px;
+        }
+        .header {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .toggle-form-btn {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1 class="text-center">Meeting Room Management</h1>
+            <nav class="navbar">
+                <div class="navbar-container">
+                    <a th:href="@{/}" class="navbar-logo">Meeting Room System</a>
+                    <div class="navbar-links">
+                        <a th:href="@{/}" class="nav-link">Home</a>
+                        <a th:href="@{/auth/login}" class="nav-link">Login</a>
+                        <a th:href="@{/auth/register}" class="nav-link register-button">Register</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    
+
+    <div class="container">
+        <!-- Success/Error Messages -->
+        <div th:if="${successMessage}" class="alert alert-success" role="alert">
+            <span th:text="${successMessage}"></span>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <!-- Toggle Form Button -->
+        <button id="toggleFormBtn" class="btn btn-primary toggle-form-btn">Add New Meeting Room</button>
+
+        <!-- Add Meeting Room Form -->
+        <div id="roomForm" class="form-container" style="display: none;">
+            <h2 class="mb-4">Add New Meeting Room</h2>
+            <form th:action="@{/admin/meeting-rooms}" method="post" th:object="${adminMeetingRoom}">
+                <div class="mb-3">
+                    <label for="roomName" class="form-label">Room Name *</label>
+                    <input type="text" class="form-control" id="roomName" th:field="*{roomName}" required>
+                    <div class="text-danger" th:if="${#fields.hasErrors('roomName')}" th:errors="*{roomName}"></div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="capacity" class="form-label">Capacity *</label>
+                    <input type="number" class="form-control" id="capacity" th:field="*{capacity}" min="1" required>
+                    <div class="text-danger" th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="location" th:field="*{location}">
+                </div>
+                
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="hasProjector" th:field="*{hasProjector}">
+                    <label class="form-check-label" for="hasProjector">Has Projector</label>
+                </div>
+                
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="hasVideoConference" th:field="*{hasVideoConference}">
+                    <label class="form-check-label" for="hasVideoConference">Has Video Conference</label>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="amenities" class="form-label">Amenities</label>
+                    <textarea class="form-control" id="amenities" th:field="*{amenities}" rows="3" 
+                              placeholder="List additional amenities (e.g., whiteboards, TV, etc.)"></textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-success me-2">Save Room</button>
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Meeting Rooms Table -->
+        <div class="room-table">
+            <h2>Meeting Rooms</h2>
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Room Name</th>
+                        <th>Capacity</th>
+                        <th>Location</th>
+                        <th>Has Projector</th>
+                        <th>Has Video Conference</th>
+                        <th>Amenities</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${rooms.empty}">
+                        <td colspan="7" class="text-center">No meeting rooms available</td>
+                    </tr>
+                    <tr th:each="room : ${rooms}">
+                        <td th:text="${room.id}"></td>
+                        <td th:text="${room.roomName}"></td>
+                        <td th:text="${room.capacity}"></td>
+                        <td th:text="${room.location ?: '-'}"></td>
+                        <td>
+                            <span th:if="${room.hasProjector}" class="badge bg-success">Yes</span>
+                            <span th:unless="${room.hasProjector}" class="badge bg-secondary">No</span>
+                        </td>
+                        <td>
+                            <span th:if="${room.hasVideoConference}" class="badge bg-success">Yes</span>
+                            <span th:unless="${room.hasVideoConference}" class="badge bg-secondary">No</span>
+                        </td>
+                        <td th:text="${room.amenities ?: '-'}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle form visibility
+        document.getElementById('toggleFormBtn').addEventListener('click', function() {
+            const formDiv = document.getElementById('roomForm');
+            const btn = document.getElementById('toggleFormBtn');
+            
+            if (formDiv.style.display === 'none') {
+                formDiv.style.display = 'block';
+                btn.textContent = 'Hide Form';
+                btn.classList.replace('btn-primary', 'btn-secondary');
+            } else {
+                formDiv.style.display = 'none';
+                btn.textContent = 'Add New Meeting Room';
+                btn.classList.replace('btn-secondary', 'btn-primary');
+            }
+        });
+
+        // Cancel button functionality
+        document.getElementById('cancelBtn').addEventListener('click', function() {
+            document.getElementById('roomForm').style.display = 'none';
+            const btn = document.getElementById('toggleFormBtn');
+            btn.textContent = 'Add New Meeting Room';
+            btn.classList.replace('btn-secondary', 'btn-primary');
+        });
+    </script>
+</body>
+</html>
