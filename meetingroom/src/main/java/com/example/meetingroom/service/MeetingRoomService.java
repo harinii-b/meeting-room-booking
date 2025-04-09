@@ -70,11 +70,66 @@
 //     }
 // }
 
+// //Today
+// package com.example.meetingroom.service;
+
+// import com.example.meetingroom.model.MeetingRoomBooking;
+// import com.example.meetingroom.repository.MeetingRoomRepository;
+
+// import jakarta.servlet.http.HttpSession;
+
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.stereotype.Service;
+// import java.time.LocalDateTime;
+// import java.util.List;
+
+// @Service
+// public class MeetingRoomService {
+
+//     private final MeetingRoomRepository meetingRoomRepository;
+
+//     public MeetingRoomService(MeetingRoomRepository meetingRoomRepository) {
+//         this.meetingRoomRepository = meetingRoomRepository;
+//     }
+
+//     public List<MeetingRoomBooking> getAllBookings() {
+//         return meetingRoomRepository.findAll();
+//     }
+
+//     public boolean bookRoom(String roomName, LocalDateTime startTime, LocalDateTime endTime, String bookedBy) {
+//         boolean isAvailable = meetingRoomRepository
+//             .findUserOverlappingBookings(roomName,bookedBy, startTime, endTime)
+//             .isEmpty();
+
+//         if (isAvailable) {
+//             MeetingRoomBooking booking = new MeetingRoomBooking(roomName, startTime, endTime, bookedBy);
+//             meetingRoomRepository.save(booking);
+//             return true;
+//         }
+//         return false;
+//     }
+
+//     @Autowired
+// private HttpSession session;
+
+// public List<MeetingRoomBooking> getUserOverlappingBookings(String roomName, LocalDateTime startTime, LocalDateTime endTime) {
+//     String loggedInUser = (String) session.getAttribute("loggedInUser"); // Get user from session
+//     if (loggedInUser == null) {
+//         throw new RuntimeException("User is not logged in.");
+//     }
+//     return meetingRoomRepository.findUserOverlappingBookings(roomName, loggedInUser, startTime, endTime);
+// }
+
+// }
+
 
 package com.example.meetingroom.service;
 
+import com.example.meetingroom.model.AdminMeetingRoom;
 import com.example.meetingroom.model.MeetingRoomBooking;
+import com.example.meetingroom.repository.MeetingRoomBookingRepository;
 import com.example.meetingroom.repository.MeetingRoomRepository;
+import com.example.meetingroom.repository.AdminMeetingRoomRepository;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -86,38 +141,48 @@ import java.util.List;
 @Service
 public class MeetingRoomService {
 
+    private final MeetingRoomBookingRepository meetingRoomBookingRepository;
+    private final AdminMeetingRoomRepository adminMeetingRoomRepository;
     private final MeetingRoomRepository meetingRoomRepository;
+    
+    @Autowired
+    private HttpSession session;
 
-    public MeetingRoomService(MeetingRoomRepository meetingRoomRepository) {
+    public MeetingRoomService(MeetingRoomBookingRepository meetingRoomBookingRepository, 
+                             AdminMeetingRoomRepository adminMeetingRoomRepository,MeetingRoomRepository meetingRoomRepository) {
         this.meetingRoomRepository = meetingRoomRepository;
+        this.meetingRoomBookingRepository = meetingRoomBookingRepository;
+        this.adminMeetingRoomRepository = adminMeetingRoomRepository;
     }
 
+    // Meeting room methods
+    public List<AdminMeetingRoom> getAllMeetingRooms() {
+        return adminMeetingRoomRepository.findAllByOrderByRoomNameAsc();
+    }
+    
+    // Booking methods
     public List<MeetingRoomBooking> getAllBookings() {
-        return meetingRoomRepository.findAll();
+        return meetingRoomBookingRepository.findAll();
     }
 
     public boolean bookRoom(String roomName, LocalDateTime startTime, LocalDateTime endTime, String bookedBy) {
         boolean isAvailable = meetingRoomRepository
-            .findUserOverlappingBookings(roomName,bookedBy, startTime, endTime)
+            .findUserOverlappingBookings(roomName, bookedBy, startTime, endTime)
             .isEmpty();
 
         if (isAvailable) {
             MeetingRoomBooking booking = new MeetingRoomBooking(roomName, startTime, endTime, bookedBy);
-            meetingRoomRepository.save(booking);
+            meetingRoomBookingRepository.save(booking);
             return true;
         }
         return false;
     }
 
-    @Autowired
-private HttpSession session;
-
-public List<MeetingRoomBooking> getUserOverlappingBookings(String roomName, LocalDateTime startTime, LocalDateTime endTime) {
-    String loggedInUser = (String) session.getAttribute("loggedInUser"); // Get user from session
-    if (loggedInUser == null) {
-        throw new RuntimeException("User is not logged in.");
+    public List<MeetingRoomBooking> getUserOverlappingBookings(String roomName, LocalDateTime startTime, LocalDateTime endTime) {
+        String loggedInUser = (String) session.getAttribute("loggedInUser"); // Get user from session
+        if (loggedInUser == null) {
+            throw new RuntimeException("User is not logged in.");
+        }
+        return meetingRoomRepository.findUserOverlappingBookings(roomName, loggedInUser, startTime, endTime);
     }
-    return meetingRoomRepository.findUserOverlappingBookings(roomName, loggedInUser, startTime, endTime);
-}
-
 }

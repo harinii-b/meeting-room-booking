@@ -1,6 +1,9 @@
 package com.example.meetingroom.repository;
 
 import com.example.meetingroom.model.AdminMeetingRoom;
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface AdminMeetingRoomRepository extends JpaRepository<AdminMeetingRoom, Long> {
     // Check if a room with this name already exists
     boolean existsByRoomName(String roomName);
+    List<AdminMeetingRoom> findAllByOrderByRoomNameAsc();
+
 }
