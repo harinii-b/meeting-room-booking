@@ -3,6 +3,7 @@ package com.example.meetingroom.repository;
 import com.example.meetingroom.model.MeetingRoomBooking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -43,7 +44,11 @@ public interface MeetingRoomAnalyticsRepository extends JpaRepository<MeetingRoo
     List<Object[]> findBookingsByDayOfWeek();
     
     // Get current bookings (rooms currently in use)
-    @Query("SELECT b FROM MeetingRoomBooking b " +
-           "WHERE ?1 BETWEEN b.startTime AND b.endTime")
-    List<MeetingRoomBooking> findCurrentBookings(LocalDateTime currentTime);
+//     @Query("SELECT b FROM MeetingRoomBooking b " +
+//            "WHERE ?1 BETWEEN b.startTime AND b.endTime")
+//     List<MeetingRoomBooking> findCurrentBookings(LocalDateTime currentTime);
+
+       @Query("SELECT b FROM MeetingRoomBooking b WHERE b.startTime <= :currentTime AND b.endTime > :currentTime")
+       List<MeetingRoomBooking> findCurrentBookings(@Param("currentTime") LocalDateTime currentTime);
+
 }

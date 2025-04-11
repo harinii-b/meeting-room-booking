@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meeting Room Analytics Dashboard</title>
+    <link rel="stylesheet" th:href="@{/styles/analytics.css}">
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
+    <!-- <style>
         .header {
             background-color: #3498db;
             color: white;
@@ -31,21 +33,21 @@
         .back-btn {
             margin-bottom: 20px;
         }
-    </style>
+    </style> -->
 </head>
 <body class="bg-light">
     <div class="header">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                 <h1>Meeting Room Analytics Dashboard</h1>
-                <a th:href="@{/admin/home}" class="btn btn-light">Back to Admin Home</a>
+                <a th:href="@{/adminhome}" class="btn btn-light">Back to Admin Home</a>
             </div>
         </div>
     </div>
 
     <div class="container">
         <!-- Date Range Filter -->
-        <div class="card mb-4">
+        <!-- <div class="card mb-4">
             <div class="card-header">
                 <h5>Filter by Date Range</h5>
             </div>
@@ -67,7 +69,7 @@
                 </form>
             </div>
         </div>
-        
+         -->
         <div class="row">
             <!-- Room Status Card -->
             <div class="col-md-6">
@@ -205,23 +207,29 @@
     </div>
     
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Chart.js initialization scripts -->
-    <script th:inline="javascript">
-        // Room status chart
-        const roomStatusCtx = document.getElementById('roomStatusChart').getContext('2d');
-        const availableRooms = roomStatus.notBooked.length;
-        const bookedRooms = roomStatus.booked.length;
-
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // This script needs to be placed at the end of your HTML body
+document.addEventListener('DOMContentLoaded', function() {
+    // Room Status Chart
+    const roomStatusChart = document.getElementById('roomStatusChart');
+    if (roomStatusChart) {
+        const ctx = roomStatusChart.getContext('2d');
         
-        new Chart(roomStatusCtx, {
+        // Extract room data from the DOM
+        const availableRoomCount = document.querySelectorAll('.text-success + ul .list-group-item').length;
+        const bookedRoomCount = document.querySelectorAll('.text-danger + ul .list-group-item').length;
+        
+        new Chart(ctx, {
             type: 'pie',
             data: {
                 labels: ['Available', 'Booked'],
                 datasets: [{
-                    data: [availableRooms, bookedRooms],
-                    backgroundColor: ['#2ecc71', '#e74c3c'],
+                    data: [availableRoomCount, bookedRoomCount],
+                    backgroundColor: ['#4ade80', '#f87171'],
+                    borderColor: ['#38a169', '#e53e3e'],
+                    borderWidth: 1
                 }]
             },
             options: {
@@ -229,28 +237,48 @@
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        position: 'bottom'
+                        position: 'bottom',
+                        labels: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        displayColors: false
                     }
                 }
             }
         });
+    }
+    
+    // Top Bookers Chart
+    const topBookersChart = document.getElementById('topBookersChart');
+    if (topBookersChart) {
+        const ctx = topBookersChart.getContext('2d');
         
-        // Top bookers chart
-        const topBookersCtx = document.getElementById('topBookersChart').getContext('2d');
-        const topBookersData = topBookers;
+        // Extract top bookers data from the table
+        const userCells = Array.from(document.querySelectorAll('th:nth-child(2) + td'));
+        const bookingCells = Array.from(document.querySelectorAll('th:nth-child(3) + td'));
         
-        if (topBookersData && topBookersData.length > 0) {
-            const bookerNames = topBookersData.map(item => item.bookedBy);
-            const bookingCounts = topBookersData.map(item => item.bookingCount);
-            
-            new Chart(topBookersCtx, {
+        const users = userCells.map(cell => cell.textContent);
+        const bookings = bookingCells.map(cell => parseInt(cell.textContent, 10));
+        
+        if (users.length > 0 && bookings.length > 0) {
+            new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: bookerNames,
+                    labels: users,
                     datasets: [{
-                        label: 'Number of Bookings',
-                        data: bookingCounts,
-                        backgroundColor: '#3498db'
+                        label: 'Bookings',
+                        data: bookings,
+                        backgroundColor: '#3a7bd5',
+                        borderColor: '#2563eb',
+                        borderWidth: 1
                     }]
                 },
                 options: {
@@ -260,33 +288,55 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                precision: 0
+                                precision: 0,
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
                             }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
                         }
                     }
                 }
             });
         }
+    }
+    
+    // Peak Hours Chart
+    const peakHoursChart = document.getElementById('peakHoursChart');
+    if (peakHoursChart) {
+        const ctx = peakHoursChart.getContext('2d');
         
-        // Peak hours chart
-        const peakHoursCtx = document.getElementById('peakHoursChart').getContext('2d');
-        const peakHoursData = peakHours;
+        // Extract peak hours data from the table
+        const timeRangeCells = Array.from(document.querySelectorAll('.col-md-6 .card:nth-of-type(1) td:nth-child(1)'));
+        const hourCountCells = Array.from(document.querySelectorAll('.col-md-6 .card:nth-of-type(1) td:nth-child(2)'));
         
-        if (peakHoursData && peakHoursData.length > 0) {
-            const timeRanges = peakHoursData.map(item => item.timeRange);
-            const hourCounts = peakHoursData.map(item => item.bookingCount);
-            
-            new Chart(peakHoursCtx, {
-                type: 'line',
+        const timeRanges = timeRangeCells.map(cell => cell.textContent);
+        const hourCounts = hourCountCells.map(cell => parseInt(cell.textContent, 10));
+        
+        if (timeRanges.length > 0 && hourCounts.length > 0) {
+            new Chart(ctx, {
+                type: 'bar',
                 data: {
                     labels: timeRanges,
                     datasets: [{
                         label: 'Bookings',
                         data: hourCounts,
-                        borderColor: '#9b59b6',
-                        backgroundColor: 'rgba(155, 89, 182, 0.2)',
-                        fill: true,
-                        tension: 0.4
+                        backgroundColor: '#9b59b6',
+                        borderColor: '#8e44ad',
+                        borderWidth: 1
                     }]
                 },
                 options: {
@@ -296,30 +346,55 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                precision: 0
+                                precision: 0,
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
                             }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
                         }
                     }
                 }
             });
         }
+    }
+    
+    // Peak Days Chart
+    const peakDaysChart = document.getElementById('peakDaysChart');
+    if (peakDaysChart) {
+        const ctx = peakDaysChart.getContext('2d');
         
-        // Days of week chart
-        const peakDaysCtx = document.getElementById('peakDaysChart').getContext('2d');
-        const peakDaysData = peakDays;
+        // Extract peak days data from the table
+        const dayCells = Array.from(document.querySelectorAll('.col-md-6 .card:nth-of-type(2) td:nth-child(1)'));
+        const dayCountCells = Array.from(document.querySelectorAll('.col-md-6 .card:nth-of-type(2) td:nth-child(2)'));
         
-        if (peakDaysData && Object.keys(peakDaysData).length > 0) {
-            const days = Object.keys(peakDaysData);
-            const dayCounts = Object.values(peakDaysData);
-            
-            new Chart(peakDaysCtx, {
+        const days = dayCells.map(cell => cell.textContent);
+        const dayCounts = dayCountCells.map(cell => parseInt(cell.textContent, 10));
+        
+        if (days.length > 0 && dayCounts.length > 0) {
+            new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: days,
                     datasets: [{
-                        label: 'Bookings by Day',
+                        label: 'Bookings',
                         data: dayCounts,
-                        backgroundColor: '#f1c40f'
+                        backgroundColor: '#f39c12',
+                        borderColor: '#e67e22',
+                        borderWidth: 1
                     }]
                 },
                 options: {
@@ -329,13 +404,32 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                precision: 0
+                                precision: 0,
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
                             }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
                         }
                     }
                 }
             });
         }
+    }
+});
     </script>
 </body>
 </html>
