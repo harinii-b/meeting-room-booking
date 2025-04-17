@@ -38,7 +38,7 @@
 //         }
 //     }
     
-//     // Get all meeting rooms
+//     // Get all meeting rooms (list)
 //     @GetMapping
 //     public ResponseEntity<List<AdminMeetingRoom>> getAllMeetingRooms() {
 //         List<AdminMeetingRoom> rooms = adminMeetingRoomService.getAllMeetingRooms();

@@ -20,6 +20,6 @@ public class AdminHomeController {
     
     @GetMapping("/adminhome")
     public String showAdminHomePage() {
-        return "adminhome"; // This will render .html from templates folder
+        return "adminhome"; // this will render .html from templates folder
     }
 }
