@@ -1,5 +1,4 @@
 package com.example.meetingroom.service;
-
 import com.example.meetingroom.model.AdminMeetingRoom;
 import com.example.meetingroom.repository.AdminMeetingRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class AdminMeetingRoomService {
         return adminMeetingRoomRepository.save(adminMeetingRoom);
     }
     
-    // Get all meeting rooms
+    // Get a list of all meeting rooms
     public List<AdminMeetingRoom> getAllMeetingRooms() {
         return adminMeetingRoomRepository.findAll();
     }

@@ -125,7 +125,7 @@ public class AdminMeetingRoom {
     private Long id;
     
     @NotBlank(message = "Room name is required")
-    @Column(name = "room_name") // Explicitly map to the database column
+    @Column(name = "room_name") // Map explicitly to the database column
     private String roomName;
     
     @NotNull(message = "Capacity is required")

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AdminMeetingRoomRepository extends JpaRepository<AdminMeetingRoom, Long> {
-    // Check if a room with this name already exists
+    // Check if a room with the same name already exists
     boolean existsByRoomName(String roomName);
     List<AdminMeetingRoom> findAllByOrderByRoomNameAsc();
 
