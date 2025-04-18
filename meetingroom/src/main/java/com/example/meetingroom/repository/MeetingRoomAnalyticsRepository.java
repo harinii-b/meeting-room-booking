@@ -51,4 +51,9 @@ public interface MeetingRoomAnalyticsRepository extends JpaRepository<MeetingRoo
        @Query("SELECT b FROM MeetingRoomBooking b WHERE b.startTime <= :currentTime AND b.endTime > :currentTime")
        List<MeetingRoomBooking> findCurrentBookings(@Param("currentTime") LocalDateTime currentTime);
 
+       @Query("SELECT m.roomName, AVG(TIMESTAMPDIFF(MINUTE, m.startTime, m.endTime)) " +
+       "FROM MeetingRoomBooking m GROUP BY m.roomName")
+       List<Object[]> findAverageBookingDurationPerRoom();
+
+
 }

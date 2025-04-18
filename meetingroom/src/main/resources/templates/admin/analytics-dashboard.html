@@ -186,6 +186,36 @@
                 </div>
             </div>
         </div>
+        <div class="card" id="avg-duration-card">
+            <div class="card-header"><h5>Average Booking Duration per Room</h5></div>
+            <div class="card-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Room</th>
+                    <th>Avg Duration (mins)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="room : ${averageDurations}">
+                    <td th:text="${room.room}"></td>
+                    <td th:text="${room.averageDuration}"></td>
+                  </tr>
+                  <tr th:if="${#lists.isEmpty(averageDurations)}">
+                    <td colspan="2" class="text-center">No data available</td>
+                  </tr>
+                </tbody>
+              </table>
+          
+              <!-- <canvas id="avgDurationChart" height="150"></canvas> -->
+              <div style="height: 300px;">
+                <canvas id="avgDurationChart"></canvas>
+            </div>
+            
+            </div>
+          </div>
+          
+        
     </div>
     
     <!-- Bootstrap JS -->
@@ -447,6 +477,60 @@ new Chart(ctx, {
             });
         }
     }
+
+    //Average Hours
+    const avgDurationChart = document.getElementById('avgDurationChart');
+    if (avgDurationChart) {
+    const ctx = avgDurationChart.getContext('2d');
+
+    const roomCells = Array.from(document.querySelectorAll('#avg-duration-card td:nth-child(1)'));
+    const durationCells = Array.from(document.querySelectorAll('#avg-duration-card td:nth-child(2)'));
+
+    const roomLabels = roomCells.map(cell => cell.textContent.trim());
+    const durationValues = durationCells.map(cell => parseFloat(cell.textContent.trim()));
+
+    if (roomLabels.length > 0 && durationValues.length > 0) {
+        new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: roomLabels,
+            datasets: [{
+            label: 'Avg Duration (mins)',
+            data: durationValues,
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                display: true,
+                text: 'Minutes'
+                }
+            },
+            x: {
+                ticks: {
+                color: '#000'
+                }
+            }
+            },
+            plugins: {
+            legend: {
+                display: true
+            }
+            }
+        }
+        });
+    }
+}
+
+
+
 });
     </script>
 </body>

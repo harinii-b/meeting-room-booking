@@ -59,6 +59,12 @@ public class MeetingRoomAnalyticsController {
         // Peak days
         Map<String, Long> peakDays = analyticsService.getBookingsByDayOfWeek();
         model.addAttribute("peakDays", peakDays);
+
+        // Average durations
+        List<Map<String, Object>> averageDurations = analyticsService.getAverageBookingDurationPerRoom();
+        model.addAttribute("averageDurations", averageDurations);
+        //model.addAttribute("averageDurations", analyticsService.getAverageBookingDurationPerRoom());
+
         
         return "admin/analytics-dashboard";
     }
@@ -105,4 +111,11 @@ public class MeetingRoomAnalyticsController {
         
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("api/admin/analytics/average-booking-duration")
+
+        public ResponseEntity<List<Map<String, Object>>> getAverageBookingDuration() {
+        return ResponseEntity.ok(analyticsService.getAverageBookingDurationPerRoom());
+    }
+
 }

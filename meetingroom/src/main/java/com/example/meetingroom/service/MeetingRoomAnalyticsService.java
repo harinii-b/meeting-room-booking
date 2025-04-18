@@ -160,4 +160,17 @@ public class MeetingRoomAnalyticsService {
         
         return formattedData;
     }
+
+    public List<Map<String, Object>> getAverageBookingDurationPerRoom() {
+        List<Object[]> result = analyticsRepository.findAverageBookingDurationPerRoom();
+        List<Map<String, Object>> list = new ArrayList<>();
+        for (Object[] row : result) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("room", row[0]);
+            map.put("averageDuration", row[1]);
+            list.add(map);
+        }
+        return list;
+    }
+    
 }
