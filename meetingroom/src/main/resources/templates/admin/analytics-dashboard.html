@@ -10,30 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- <style>
-        .header {
-            background-color: #3498db;
-            color: white;
-            padding: 15px 0;
-            margin-bottom: 30px;
-        }
-        .card {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin-bottom: 25px;
-        }
-        .card-header {
-            background-color: #f8f9fa;
-            font-weight: bold;
-        }
-        .chart-container {
-            position: relative;
-            height: 250px;
-            width: 100%;
-        }
-        .back-btn {
-            margin-bottom: 20px;
-        }
-    </style> -->
+
 </head>
 <body class="bg-light">
     <div class="header">
@@ -102,7 +79,9 @@
             </div>
             
             <!-- Top Bookers Card -->
-            <div class="col-md-6">
+            <!-- <div class="col-md-6"> -->
+            <div class="col-md-6" id="top-bookers-card">
+
                 <div class="card h-100">
                     <div class="card-header">
                         <h5>Top Bookers</h5>
@@ -139,7 +118,8 @@
         
         <div class="row mt-4">
             <!-- Peak Hours Card -->
-            <div class="col-md-6">
+            <!-- <div class="col-md-6"> -->
+            <div class="col-md-6" id="peak-hours-card">
                 <div class="card h-100">
                     <div class="card-header">
                         <h5>Peak Hours</h5>
@@ -172,7 +152,9 @@
             </div>
             
             <!-- Day of Week Card -->
-            <div class="col-md-6">
+            <!-- <div class="col-md-6"> -->
+            <div class="col-md-6" id="peak-days-card">
+
                 <div class="card h-100">
                     <div class="card-header">
                         <h5>Bookings by Day of Week</h5>
@@ -209,8 +191,8 @@
     <!-- Bootstrap JS -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // This script needs to be placed at the end of your HTML body
+<script>
+    // This script needs to be placed at the end of your HTML body
 document.addEventListener('DOMContentLoaded', function() {
     // Room Status Chart
     const roomStatusChart = document.getElementById('roomStatusChart');
@@ -239,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     legend: {
                         position: 'bottom',
                         labels: {
-                            color: '#ffffff',
+                            color: '#040404',
                             font: {
                                 size: 12
                             }
@@ -257,72 +239,106 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Top Bookers Chart
-    const topBookersChart = document.getElementById('topBookersChart');
-    if (topBookersChart) {
-        const ctx = topBookersChart.getContext('2d');
+    // const topBookersChart = document.getElementById('topBookersChart');
+    // if (topBookersChart) {
+    //     const ctx = topBookersChart.getContext('2d');
         
         // Extract top bookers data from the table
-        const userCells = Array.from(document.querySelectorAll('th:nth-child(2) + td'));
-        const bookingCells = Array.from(document.querySelectorAll('th:nth-child(3) + td'));
+    //     const userCells = Array.from(document.querySelectorAll('th:nth-child(2) + td'));
+    //     const bookingCells = Array.from(document.querySelectorAll('th:nth-child(3) + td'));
         
-        const users = userCells.map(cell => cell.textContent);
-        const bookings = bookingCells.map(cell => parseInt(cell.textContent, 10));
+    //     const users = userCells.map(cell => cell.textContent);
+    //     const bookings = bookingCells.map(cell => parseInt(cell.textContent, 10));
         
-        if (users.length > 0 && bookings.length > 0) {
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: users,
-                    datasets: [{
-                        label: 'Bookings',
-                        data: bookings,
-                        backgroundColor: '#3a7bd5',
-                        borderColor: '#2563eb',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                precision: 0,
-                                color: '#ffffff'
-                            },
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                color: '#ffffff'
-                            },
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-        }
+    //     if (users.length > 0 && bookings.length > 0) {
+    //         new Chart(ctx, {
+    //             type: 'bar',
+    //             data: {
+    //                 labels: users,
+    //                 datasets: [{
+    //                     label: 'Bookings',
+    //                     data: bookings,
+    //                     backgroundColor: '#3a7bd5',
+    //                     borderColor: '#2563eb',
+    //                     borderWidth: 1
+    //                 }]
+    //             },
+    //             options: {
+    //                 responsive: true,
+    //                 maintainAspectRatio: false,
+    //                 scales: {
+    //                     y: {
+    //                         beginAtZero: true,
+    //                         ticks: {
+    //                             precision: 0,
+    //                             color: '#ffffff'
+    //                         },
+    //                         grid: {
+    //                             color: 'rgba(255, 255, 255, 0.1)'
+    //                         }
+    //                     },
+    //                     x: {
+    //                         ticks: {
+    //                             color: '#ffffff'
+    //                         },
+    //                         grid: {
+    //                             color: 'rgba(255, 255, 255, 0.1)'
+    //                         }
+    //                     }
+    //                 },
+    //                 plugins: {
+    //                     legend: {
+    //                         display: false
+    //                     }
+    //                 }
+    //             }
+    //         });
+    //     }
+    // }
+
+    const userCells = Array.from(document.querySelectorAll('#top-bookers-card td:nth-child(2)'));
+const bookingCells = Array.from(document.querySelectorAll('#top-bookers-card td:nth-child(3)'));
+
+const userLabels = userCells.map(cell => cell.textContent.trim());
+const bookingData = bookingCells.map(cell => parseInt(cell.textContent.trim(), 10));
+
+// Get canvas context
+const ctx = document.querySelector('#top-bookers-card canvas').getContext('2d');
+
+// Render bar chart
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: userLabels,
+    datasets: [{
+      label: 'Bookings',
+      data: bookingData,
+      backgroundColor: '#36A2EB'
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        stepSize: 1
+      }
     }
+  }
+});
+
     
     // Peak Hours Chart
     const peakHoursChart = document.getElementById('peakHoursChart');
     if (peakHoursChart) {
         const ctx = peakHoursChart.getContext('2d');
         
-        // Extract peak hours data from the table
-        const timeRangeCells = Array.from(document.querySelectorAll('.col-md-6 .card:nth-of-type(1) td:nth-child(1)'));
-        const hourCountCells = Array.from(document.querySelectorAll('.col-md-6 .card:nth-of-type(1) td:nth-child(2)'));
-        
+        // // Extract peak hours data from the table
+        // const timeRangeCells = Array.from(document.querySelectorAll('.col-md-6 .card:nth-of-type(1) td:nth-child(1)'));
+        // const hourCountCells = Array.from(document.querySelectorAll('.col-md-6 .card:nth-of-type(1) td:nth-child(2)'));
+        const timeRangeCells = Array.from(document.querySelectorAll('#peak-hours-card td:nth-child(1)'));
+        const hourCountCells = Array.from(document.querySelectorAll('#peak-hours-card td:nth-child(2)'));
+
         const timeRanges = timeRangeCells.map(cell => cell.textContent);
         const hourCounts = hourCountCells.map(cell => parseInt(cell.textContent, 10));
         
@@ -347,7 +363,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             beginAtZero: true,
                             ticks: {
                                 precision: 0,
-                                color: '#ffffff'
+                                color: '#000000'
                             },
                             grid: {
                                 color: 'rgba(255, 255, 255, 0.1)'
@@ -355,7 +371,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         },
                         x: {
                             ticks: {
-                                color: '#ffffff'
+                                color: '#000000'
                             },
                             grid: {
                                 color: 'rgba(255, 255, 255, 0.1)'
@@ -372,15 +388,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Peak Days Chart
+    // Peak Days Chart (Bookings by Day of Week)
     const peakDaysChart = document.getElementById('peakDaysChart');
     if (peakDaysChart) {
         const ctx = peakDaysChart.getContext('2d');
         
         // Extract peak days data from the table
-        const dayCells = Array.from(document.querySelectorAll('.col-md-6 .card:nth-of-type(2) td:nth-child(1)'));
-        const dayCountCells = Array.from(document.querySelectorAll('.col-md-6 .card:nth-of-type(2) td:nth-child(2)'));
-        
+        // const dayCells = Array.from(document.querySelectorAll('.col-md-6 .card:nth-of-type(2) td:nth-child(1)'));
+        // const dayCountCells = Array.from(document.querySelectorAll('.col-md-6 .card:nth-of-type(2) td:nth-child(2)'));
+        const dayCells = Array.from(document.querySelectorAll('#peak-days-card td:nth-child(1)'));
+        const dayCountCells = Array.from(document.querySelectorAll('#peak-days-card td:nth-child(2)'));
+
         const days = dayCells.map(cell => cell.textContent);
         const dayCounts = dayCountCells.map(cell => parseInt(cell.textContent, 10));
         
@@ -392,8 +410,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     datasets: [{
                         label: 'Bookings',
                         data: dayCounts,
-                        backgroundColor: '#f39c12',
-                        borderColor: '#e67e22',
+                        backgroundColor: '#e67e22',
+                        borderColor: '#d35400',
                         borderWidth: 1
                     }]
                 },
@@ -405,7 +423,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             beginAtZero: true,
                             ticks: {
                                 precision: 0,
-                                color: '#ffffff'
+                                color: '#000000'
                             },
                             grid: {
                                 color: 'rgba(255, 255, 255, 0.1)'
@@ -413,7 +431,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         },
                         x: {
                             ticks: {
-                                color: '#ffffff'
+                                color: '#000000'
                             },
                             grid: {
                                 color: 'rgba(255, 255, 255, 0.1)'

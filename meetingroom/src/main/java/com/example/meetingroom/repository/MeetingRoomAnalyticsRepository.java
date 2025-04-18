@@ -23,7 +23,7 @@ public interface MeetingRoomAnalyticsRepository extends JpaRepository<MeetingRoo
     
     // Get top N bookers with booking count
     @Query(value = "SELECT booked_by, COUNT(*) as booking_count FROM meeting_room_bookings " +
-                  "GROUP BY booked_by ORDER BY booking_count DESC LIMIT ?1", 
+                  "GROUP BY booked_by ORDER BY booking_count DESC", 
            nativeQuery = true)
     List<Object[]> findTopNBookers(int limit);
     
